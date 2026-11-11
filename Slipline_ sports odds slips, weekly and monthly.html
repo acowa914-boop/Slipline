@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Slipline: sports odds slips, weekly and monthly</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{--g1:#14573f;--g2:#104a35;--line:rgba(255,255,255,.2);--ink:#1b1a17;--paper:#f7f2e4;--ticket:#ffd23f;--stamp:#d62839;--text:#f4f7f2;--mut:#bcd3c7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--g1:#0d2d22;--g2:#0a251c;--line:rgba(255,255,255,.14);--mut:#9fbfb0}}
+:root[data-theme="dark"]{--g1:#0d2d22;--g2:#0a251c;--line:rgba(255,255,255,.14);--mut:#9fbfb0}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth;overflow-x:hidden;overflow-x:clip;max-width:100%;-webkit-text-size-adjust:100%;text-size-adjust:100%;background:var(--g1)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;color:var(--text);font:400 17px/1.55 "Courier Prime",ui-monospace,Menlo,Consolas,monospace;background:repeating-linear-gradient(90deg,var(--g1) 0 90px,var(--g2) 90px 180px);overflow-x:hidden}
+h1,h2,h3,.big{font-family:"Bricolage Grotesque","Arial Black",Impact,sans-serif;margin:0;line-height:1.02;letter-spacing:-.02em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ticket);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+nav{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+.brand{font:800 26px "Bricolage Grotesque",sans-serif;text-decoration:none;letter-spacing:-.03em}
+.brand i{font-style:normal;color:var(--ticket)}
+.links{display:flex;gap:22px;align-items:center}
+.links a{text-decoration:none}
+.btn{display:inline-block;background:var(--ticket);color:var(--ink);font-weight:700;text-decoration:none;padding:12px 20px;border:2px solid var(--ink);box-shadow:4px 4px 0 var(--ink);cursor:pointer;font-family:inherit;font-size:16px}
+.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+.btn,.seg button{min-height:44px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.btn{display:inline-flex;align-items:center;justify-content:center;text-align:center}
+.hero{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center;padding:48px 0 72px}
+.hero::before{content:"";position:absolute;left:-60px;top:50%;width:460px;height:460px;border:3px solid var(--line);border-radius:50%;transform:translateY(-50%);pointer-events:none}
+.hero>*{position:relative;min-width:0}
+h1{font-size:46px;font-size:clamp(46px,8vw,92px);font-weight:800;overflow-wrap:break-word}
+.lead{max-width:34em;color:var(--mut);margin:22px 0 28px}
+.cta{display:flex;gap:14px;flex-wrap:wrap}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--text);box-shadow:none}
+.slip{position:relative;background:var(--paper);color:var(--ink);padding:20px 20px 22px;margin-bottom:10px;box-shadow:0 14px 30px rgba(0,0,0,.25)}
+.slip::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:8px;background:radial-gradient(circle at 7px 0,transparent 6px,var(--paper) 6.5px) 0 0/14px 8px repeat-x}
+.dash{border:0;border-top:2px dashed rgba(27,26,23,.35);margin:14px 0}
+.tag{font-size:14px;opacity:.7}
+.leg{display:flex;justify-content:space-between;gap:12px;padding:6px 0;border-bottom:1px dotted rgba(27,26,23,.3);overflow-wrap:anywhere}
+.leg small{display:block;opacity:.7;font-size:14px}
+.total{display:flex;justify-content:space-between;align-items:flex-end}
+.big{font-size:64px;font-weight:800}
+.free{transform:rotate(1.5deg)}
+.free .big{font-size:76px}
+section{padding:64px 0}
+h2{font-size:34px;font-size:clamp(34px,5vw,56px);font-weight:800;overflow-wrap:break-word}
+.sub{color:var(--mut);max-width:38em;margin:12px 0 0}
+.bar{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin:28px 0 40px}
+.seg{display:inline-flex;border:2px solid var(--text)}
+.seg button{font:700 16px "Courier Prime",monospace;padding:10px 20px;background:transparent;color:var(--text);border:0;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ticket);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:30px 22px}
+.plan .big{font-size:84px;display:flex;align-items:baseline;gap:4px}
+.plan .big span{font-size:30px}
+.plan ul{list-style:none;margin:0;padding:0;font-size:15.5px}
+.plan li{padding:3px 0}
+.risk{display:flex;gap:4px;align-items:center;font-size:14px;margin:12px 0 0}
+.risk b{width:14px;height:14px;border:2px solid var(--ink);display:inline-block}
+.risk b.on{background:var(--ink)}
+.price{font:800 28px "Bricolage Grotesque",sans-serif;letter-spacing:-.02em}
+.plan .btn{width:100%;margin-top:14px;background:var(--ink);color:var(--ticket);box-shadow:none;text-align:center}
+.stamp{position:absolute;top:18px;right:14px;border:2px solid var(--stamp);color:var(--stamp);font-weight:700;padding:1px 8px;transform:rotate(8deg);font-size:15px}
+.stamp.hit{animation:slam .3s ease-out}
+@keyframes slam{from{transform:rotate(8deg) scale(1.9);opacity:0}to{transform:rotate(8deg) scale(1);opacity:1}}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px;margin-top:34px}
+.steps div{border-top:3px solid var(--ticket);padding-top:14px}
+.steps .big{font-size:56px;color:var(--ticket)}
+.steps h3{font-size:26px;margin:4px 0 8px}
+.steps p{margin:0;color:var(--mut)}
+.rg{border:3px solid var(--ticket);padding:22px;display:flex;gap:20px;align-items:flex-start;background:rgba(0,0,0,.18)}
+.rg .big{font-size:44px;color:var(--ticket);flex:none}
+.rg p{margin:0}
+footer{padding:36px 0 56px;color:var(--mut);display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:15px}
+@media (max-width:820px){.hero{grid-template-columns:1fr}.links a:not(.btn){display:none}.hero::before{left:auto;right:-160px}.free{transform:none}}
+.pay .big{font-size:40px;font-size:clamp(34px,10vw,64px);margin:6px 0 10px}.pay p{margin:0 0 16px}.pay .btn.alt{background:transparent;color:var(--ink);box-shadow:none}
+@media (max-width:480px){body{font-size:16px}.wrap{padding:0 16px}h1{font-size:40px}.hero{padding:28px 0 52px;gap:30px}section{padding:48px 0}.btn{padding:12px 16px}.cta .btn,.pay .btn{flex:1 1 100%;text-align:center}.free .big{font-size:60px}.plan .big{font-size:72px}.rg{flex-direction:column;gap:8px}.seg{width:100%}.seg button{flex:1}.brand{font-size:23px}nav .btn{padding:9px 12px;font-size:14px}.stamp{font-size:13px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <a class="brand" href="#top">Slip<i>line</i></a>
+  <div class="links"><a href="#plans">Plans</a><a href="#how">How it works</a><a class="btn" id="navWa" href="#" target="_blank" rel="noopener">WhatsApp us</a></div>
+</nav>
+
+<header class="hero" id="top">
+  <div>
+    <h1>Pick your odds.<br>Pick your week.</h1>
+    <p class="lead">Researched sports slips sorted by total odds. Start at Odd 2, climb to Odd 10, and subscribe for a week or a full month. Every slip lands on your WhatsApp before kickoff.</p>
+    <div class="cta"><a class="btn" href="#plans">See the plans</a><a class="btn ghost" href="#how">How it works</a></div>
+  </div>
+  <div>
+    <div class="slip free" aria-label="Free slip of the day">
+      <div class="tag">Free slip of the day</div>
+      <hr class="dash">
+      <div id="legs"></div>
+      <hr class="dash">
+      <div class="total"><div><div class="tag">Total odds</div><div class="big" id="tot">1.00</div></div><div class="tag">3 legs</div></div>
+    </div>
+  </div>
+</header>
+
+<section id="plans">
+  <h2>Choose your odds</h2>
+  <p class="sub">Higher odds pay more and hit less often. Pick the level that fits how you play, then choose weekly or monthly.</p>
+  <div class="bar">
+    <div class="seg" role="group" aria-label="Billing period">
+      <button type="button" data-m="w" aria-pressed="true">Weekly</button>
+      <button type="button" data-m="m" aria-pressed="false">Monthly</button>
+    </div>
+    <span id="save" class="sub" style="margin:0"></span>
+  </div>
+  <div class="grid" id="plansGrid"><noscript><p>Turn on JavaScript to see the plans, or <a href="https://wa.me/256747134113">message us on WhatsApp</a>.</p></noscript></div>
+</section>
+
+<section id="how">
+  <h2>Three steps to your slip</h2>
+  <div class="steps">
+    <div><div class="big">1</div><h3>Choose a plan</h3><p>Pick your odds level and weekly or monthly access.</p></div>
+    <div><div class="big">2</div><h3>Pay by mobile money</h3><p>Message us on WhatsApp, receive the payment details, and pay by mobile money.</p></div>
+    <div><div class="big">3</div><h3>Receive your slips</h3><p>Your slip arrives on WhatsApp each day before the games start.</p></div>
+  </div>
+</section>
+
+<section id="contact" style="padding-top:0">
+  <div class="slip pay">
+    <div class="tag">Inquiries and payments</div>
+    <div class="big">Talk to us</div>
+    <p>Tap Message on WhatsApp with the plan you chose and we will send you the mobile money payment details. Questions? Message or call us any time.</p>
+    <div class="cta"><a class="btn" id="payWa" href="#" target="_blank" rel="noopener">Message on WhatsApp</a><a class="btn alt" href="tel:+256747134113">Call now</a></div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="rg">
+    <div class="big">18+</div>
+    <p>Betting carries risk and no slip is guaranteed to win. We share analysis, not promises. Only stake money you can afford to lose, and stop if betting stops being fun.</p>
+  </div>
+</section>
+
+<footer>
+  <span>© <span id="yr"></span> Slipline. Sports analysis for entertainment.</span>
+  <span><a href="tel:+256747134113">Call us</a> or <a id="footWa" href="#" target="_blank" rel="noopener">WhatsApp</a></span>
+</footer>
+</div>
+
+<script>
+// ---- Edit these ----
+const CFG = {
+  wa: "256747134113",   // inquiries and payments number (country code first, no + or spaces)
+  cur: "UGX",
+  plans: [
+    {odd:2,  risk:1, w:10000, m:30000,  note:"Lowest risk, steady build"},
+    {odd:3,  risk:2, w:15000, m:45000,  note:"Balanced slip"},
+    {odd:4,  risk:3, w:20000, m:60000,  note:"Bigger payout, fewer hits"},
+    {odd:5,  risk:4, w:25000, m:75000,  note:"High reward slip"},
+    {odd:10, risk:5, w:40000, m:120000, note:"Long shot, high risk"}
+  ],
+  free: [   // replace with today's real picks
+    {m:"Home Team vs Away Team", p:"Over 1.5 goals", o:1.60},
+    {m:"Team C vs Team D", p:"Both teams to score", o:1.55},
+    {m:"Team E vs Team F", p:"Home or draw", o:1.62}
+  ]
+};
+// --------------------
+let mode = "w";
+const $ = s => document.querySelector(s);
+const fmt = n => n.toLocaleString("en-US");
+const wa = msg => "https://wa.me/" + CFG.wa + "?text=" + encodeURIComponent(msg || "Hello, I want to see your odds plans.");
+
+function renderPlans(hit){
+  const label = mode === "w" ? "Weekly" : "Monthly";
+  $("#plansGrid").innerHTML = CFG.plans.map(p => {
+    const price = p[mode];
+    const msg = "Hello, I want the Odd " + p.odd + " " + label.toLowerCase() + " plan (" + CFG.cur + " " + fmt(price) + ").";
+    let r = ""; for(let i=1;i<=5;i++) r += '<b class="' + (i<=p.risk?"on":"") + '"></b>';
+    return '<article class="slip plan">' +
+      '<div class="stamp' + (hit?" hit":"") + '">' + label + '</div>' +
+      '<div class="tag">Slip level</div>' +
+      '<div class="big"><span>Odd</span>' + p.odd + '+</div>' +
+      '<hr class="dash">' +
+      '<ul><li>' + p.note + '</li><li>' + (mode==="w" ? "7 days of daily slips" : "30 days of daily slips") + '</li><li>Delivered on WhatsApp</li></ul>' +
+      '<div class="risk" aria-label="Risk level ' + p.risk + ' of 5">Risk ' + r + '</div>' +
+      '<hr class="dash">' +
+      '<div class="price">' + CFG.cur + ' ' + fmt(price) + '</div><div class="tag">' + (mode==="w" ? "per week" : "per month") + '</div>' +
+      '<a class="btn" target="_blank" rel="noopener" href="' + wa(msg) + '">Get Odd ' + p.odd + '</a>' +
+      '</article>';
+  }).join("");
+  const best = Math.max(...CFG.plans.map(p => Math.round((1 - p.m / (p.w * 4)) * 100)));
+  $("#save").textContent = mode === "m" ? "Monthly saves up to " + best + "% against four weekly plans." : "Subscribe monthly and save up to " + best + "%.";
+}
+
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  mode = b.dataset.m;
+  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", x === b));
+  renderPlans(true);
+}));
+
+// free slip
+$("#legs").innerHTML = CFG.free.map(l =>
+  '<div class="leg"><div>' + l.m + '<small>' + l.p + '</small></div><strong>' + l.o.toFixed(2) + '</strong></div>').join("");
+const target = CFG.free.reduce((a, l) => a * l.o, 1);
+const still = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) || !window.requestAnimationFrame;
+if (still) { $("#tot").textContent = target.toFixed(2); }
+else {
+  const t0 = performance.now(), dur = 1500;
+  const tick = now => {
+    const k = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+    $("#tot").textContent = (1 + (target - 1) * e).toFixed(2);
+    if (k < 1) requestAnimationFrame(tick);
+  };
+  requestAnimationFrame(tick);
+}
+
+$("#navWa").href = wa(); $("#footWa").href = wa(); $("#payWa").href = wa();
+$("#yr").textContent = new Date().getFullYear();
+renderPlans(false);
+</script>
+</body>
+</html>
